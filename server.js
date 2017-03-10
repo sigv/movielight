@@ -11,6 +11,12 @@ let db = redis.createClient();
 
 db.on('error', err => console.error(err.stack));
 
+let tmdbKey = process.env.MOVIE_DB_KEY;
+if (typeof tmdbKey !== 'string' || tmdbKey.trim() === '') {
+  throw new Error('The `MOVIE_DB_KEY` environment variable is missing.');
+}
+let tmdb = new (require('tmdbapi'))({ apiv3: tmdbKey.trim() });
+
 let express = require('express');
 let app = express();
 
@@ -46,13 +52,13 @@ app.get('/', (req, res) => {
   }
 });
 
-let movies = require(path.join(__dirname, 'routes', 'movies'));
+let movies = require(path.join(__dirname, 'routes', 'movies'))(db, tmdb);
 app.route('/m/search/:title')
   .get(movies.search.get);
 app.route('/m/:id')
   .get(movies._.get);
 
-let people = require(path.join(__dirname, 'routes', 'people'));
+let people = require(path.join(__dirname, 'routes', 'people'))(db, tmdb);
 app.route('/p/search/:name')
   .get(people.search.get);
 app.route('/p/:id')
