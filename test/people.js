@@ -38,8 +38,8 @@ describe('People', () => {
 
           expect(person.alsoKnownAs).to.be.an('array');
           expect(person.yearBorn).to.be.a('number');
-          expect(person.yearDied).to.be.a('number').or.to.eq(null);
-          expect(person.imageUrl).to.be.a('string').or.to.eq(null);
+          expect(person.yearDied).to.eq(null); // TODO expect( .. ).to.be.a('number') ?
+          expect(person.imageUrl).to.be.a('string');
         }).end(done);
     });
   });
@@ -59,8 +59,8 @@ describe('People', () => {
 
           expect(person.alsoKnownAs).to.be.an('array');
           expect(person.yearBorn).to.be.a('number');
-          expect(person.yearDied).to.be.a('number').or.to.eq(null);
-          expect(person.imageUrl).to.be.a('string').or.to.eq(null);
+          expect(person.yearDied).to.eq(null); // TODO expect( .. ).to.be.a('number') ?
+          expect(person.imageUrl).to.be.a('string');
 
           expect(person.movies).to.be.an('array').and.and.to.have.length.within(1, 10);
         }).end(done);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-module.exports = (db, tmdb) => {
+module.exports = (db, tmdb, models) => {
   return {
 
     search: {
@@ -21,8 +21,23 @@ module.exports = (db, tmdb) => {
           data.error = { code: 400, message: 'A searchable string title must be provided.' };
           reply();
         } else {
-          data.movies = []; // TODO Implement.
-          reply();
+          tmdb.search.movie({ query: title })
+            .then(results => {
+              data.movies = results.results.map(item => {
+                return new models.Movie(item.id,
+                  item.title,
+                  item.original_title,
+                  parseInt(item.release_date.split('-')[0], 10),
+                  item.poster_path,
+                  []);
+              });
+              reply();
+            })
+            .catch(err => {
+              console.error(err);
+              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              reply();
+            });
         }
       }
     },

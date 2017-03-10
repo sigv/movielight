@@ -39,7 +39,7 @@ describe('Movies', () => {
           expect(movie.title).to.eq('Deadpool');
           expect(movie.originalTitle).to.eq('Deadpool');
           expect(movie.year).to.eq(2016);
-          expect(movie.posterUrl).to.be.a('string').or.to.eq(null);
+          expect(movie.posterUrl).to.be.a('string');
         }).end(done);
     });
   });
@@ -60,7 +60,7 @@ describe('Movies', () => {
           expect(movie.title).to.eq('Deadpool');
           expect(movie.originalTitle).to.eq('Deadpool');
           expect(movie.year).to.eq(2016);
-          expect(movie.posterUrl).to.be.a('string').or.to.eq(null);
+          expect(movie.posterUrl).to.be.a('string');
 
           expect(movie.actors).to.be.an('array').and.and.to.have.length.above(0);
         }).end(done);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-module.exports = (db, tmdb) => {
+module.exports = (db, tmdb, models) => {
   return {
 
     search: {

@@ -52,13 +52,15 @@ app.get('/', (req, res) => {
   }
 });
 
-let movies = require(path.join(__dirname, 'routes', 'movies'))(db, tmdb);
+let models = require(path.join(__dirname, 'models'));
+
+let movies = require(path.join(__dirname, 'routes', 'movies'))(db, tmdb, models);
 app.route('/m/search/:title')
   .get(movies.search.get);
 app.route('/m/:id')
   .get(movies._.get);
 
-let people = require(path.join(__dirname, 'routes', 'people'))(db, tmdb);
+let people = require(path.join(__dirname, 'routes', 'people'))(db, tmdb, models);
 app.route('/p/search/:name')
   .get(people.search.get);
 app.route('/p/:id')
