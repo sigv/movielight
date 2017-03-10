@@ -21,8 +21,24 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A searchable string name must be provided.' };
           reply();
         } else {
-          data.people = []; // TODO Implement.
-          reply();
+          tmdb.search.person({ query: name })
+            .then(person => {
+              data.people = person.results.map(person => {
+                return new models.Person(person.id,
+                  person.name,
+                  person.known_for,
+                  person.birthday ? parseInt(person.birthday.split('-')[0], 10) : null,
+                  person.deathhday ? parseInt(person.deathhday.split('-')[0], 10) : null,
+                  person.profile_path,
+                  []);
+              });
+              reply();
+            })
+            .catch(err => {
+              console.error(err);
+              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              reply();
+            });
         }
       }
     },
@@ -44,8 +60,38 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           reply();
         } else {
-          data.person = {}; // TODO Implement.
-          reply();
+          tmdb.person.info({ id: id })
+            .then(info => {
+              data.person = new models.Person(info.id,
+                info.name,
+                info.known_for,
+                info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
+                info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
+                info.profile_path,
+                []);
+              tmdb.person.movie_credits({ id: id })
+                .then(credits => {
+                  data.person.movies = credits.cast.map(credit => {
+                    return new models.Movie(credit.id,
+                      credit.title,
+                      credit.original_title,
+                      credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
+                      credit.poster_path,
+                      []);
+                  });
+                  reply();
+                })
+                .catch(err => {
+                  console.error(err);
+                  data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+                  reply();
+                });
+            })
+            .catch(err => {
+              console.error(err);
+              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              reply();
+            });
         }
       }
     }

@@ -27,7 +27,7 @@ module.exports = (db, tmdb, models) => {
                 return new models.Movie(movie.id,
                   movie.title,
                   movie.original_title,
-                  parseInt(movie.release_date.split('-')[0], 10),
+                  movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
                   movie.poster_path,
                   []);
               });
@@ -64,7 +64,7 @@ module.exports = (db, tmdb, models) => {
               data.movie = new models.Movie(movie.id,
                 movie.title,
                 movie.original_title,
-                parseInt(movie.release_date.split('-')[0], 10),
+                movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
                 movie.poster_path,
                 []);
               tmdb.movie.credits({ movie_id: id })
