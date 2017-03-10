@@ -22,13 +22,13 @@ module.exports = (db, tmdb, models) => {
           reply();
         } else {
           tmdb.search.movie({ query: title })
-            .then(results => {
-              data.movies = results.results.map(item => {
-                return new models.Movie(item.id,
-                  item.title,
-                  item.original_title,
-                  parseInt(item.release_date.split('-')[0], 10),
-                  item.poster_path,
+            .then(movie => {
+              data.movies = movie.results.map(movie => {
+                return new models.Movie(movie.id,
+                  movie.title,
+                  movie.original_title,
+                  parseInt(movie.release_date.split('-')[0], 10),
+                  movie.poster_path,
                   []);
               });
               reply();
@@ -59,8 +59,38 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           reply();
         } else {
-          data.movie = {}; // TODO Implement.
-          reply();
+          tmdb.movie.details({ movie_id: id })
+            .then(movie => {
+              data.movie = new models.Movie(movie.id,
+                movie.title,
+                movie.original_title,
+                parseInt(movie.release_date.split('-')[0], 10),
+                movie.poster_path,
+                []);
+              tmdb.movie.credits({ movie_id: id })
+                .then(credits => {
+                  data.movie.actors = credits.cast.map(person => {
+                    return new models.Person(person.id,
+                      person.name,
+                      [],
+                      null,
+                      null,
+                      person.profile_path,
+                      []);
+                  });
+                  reply();
+                })
+                .catch(err => {
+                  console.error(err);
+                  data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+                  reply();
+                });
+            })
+            .catch(err => {
+              console.error(err);
+              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              reply();
+            });
         }
       }
     }
