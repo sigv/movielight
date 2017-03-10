@@ -1,0 +1,59 @@
+{
+  "name": "movielight",
+  "version": "1.0.0",
+  "description": "Spotlight search service for movies",
+  "keywords": [
+    "themoviedb",
+    "search",
+    "movies",
+    "actors"
+  ],
+  "homepage": "https://github.com/sigv/movielight",
+  "bugs": "https://github.com/sigv/movielight/issues",
+  "license": "GPL-3.0",
+  "author": "Valters Jansons <valter.jansons@gmail.com>",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sigv/movielight.git"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "pretest": "jshint --exclude node_modules && semistandard",
+    "test": "mocha --reporter list"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "fakeredis": "^2.0.0",
+    "get-env": "^0.5.10",
+    "helmet": "^3.5.0",
+    "morgan": "^1.8.1",
+    "pug": "^2.0.0-beta11",
+    "redis": "^2.6.5"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "semistandard": "^10.0.0",
+    "supertest": "^3.0.0"
+  },
+  "engines": {
+    "node": "^6.10.0"
+  },
+  "jshintConfig": {
+    "esversion": 6,
+    "mocha": true,
+    "node": true,
+    "undef": true,
+    "unused": true,
+    "globals": {}
+  },
+  "semistandard": {
+    "env": {
+      "es6": true,
+      "mocha": true,
+      "node": true
+    }
+  }
+}
