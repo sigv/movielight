@@ -32,7 +32,7 @@ class Movie {
   set posterUrl (val) { this._posterUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get actors () { return this._actors; }
-  set actors (val) { this._actors = Array.isArray(val) ? val.filter(item => { return item instanceof Person; }) : []; }
+  set actors (val) { this._actors = Array.isArray(val) ? val.filter(item => item instanceof Person) : []; }
 }
 
 class Person {
@@ -58,7 +58,7 @@ class Person {
   set name (val) { this._name = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get alsoKnownAs () { return this._alsoKnownAs; }
-  set alsoKnownAs (val) { this._alsoKnownAs = Array.isArray(val) ? val.filter(item => { return typeof item === 'string' && item.trim() !== ''; }) : []; }
+  set alsoKnownAs (val) { this._alsoKnownAs = Array.isArray(val) ? val.filter(item => typeof item === 'string' && item.trim() !== '') : []; }
 
   get imageUrl () { return this._imageUrl; }
   set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
@@ -70,7 +70,7 @@ class Person {
   set yearDied (val) { this._yearDied = typeof val === 'number' && !isNaN(val) ? val : null; }
 
   get movies () { return this._movies; }
-  set movies (val) { this._movies = Array.isArray(val) ? val.filter(item => { return item instanceof Movie; }) : []; }
+  set movies (val) { this._movies = Array.isArray(val) ? val.filter(item => item instanceof Movie) : []; }
 }
 
 module.exports = { Movie, Person };

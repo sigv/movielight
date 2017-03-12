@@ -23,15 +23,13 @@ module.exports = (db, tmdb, models) => {
         } else {
           tmdb.search.person({ query: name })
             .then(person => {
-              data.people = person.results.map(person => {
-                return new models.Person(person.id,
-                  person.name,
-                  person.known_for,
-                  person.profile_path,
-                  null,
-                  null,
-                  null);
-              });
+              data.people = person.results.map(person => new models.Person(person.id,
+                person.name,
+                person.known_for,
+                person.profile_path,
+                null,
+                null,
+                null));
               reply();
             })
             .catch(err => {
@@ -68,14 +66,12 @@ module.exports = (db, tmdb, models) => {
                 info.profile_path,
                 info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
                 info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
-                info.movie_credits.cast.map(credit => {
-                  return new models.Movie(credit.id,
-                    credit.title,
-                    credit.original_title,
-                    credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
-                    credit.poster_path,
-                    []);
-                }).slice(0, 10));
+                info.movie_credits.cast.map(credit => new models.Movie(credit.id,
+                  credit.title,
+                  credit.original_title,
+                  credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
+                  credit.poster_path,
+                  [])).slice(0, 10));
               reply();
             })
             .catch(err => {
