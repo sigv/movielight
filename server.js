@@ -83,8 +83,13 @@ tmdb.configuration()
     if (standalone) {
       app.listen(app.get('port'));
     }
+
     app.emit('configured', null);
   })
   .catch(err => {
     throw err;
   });
+
+if (typeof before === 'function') {
+  before(done => app.on('configured', done));
+}
