@@ -99,7 +99,7 @@ configure(err => {
   app.emit('configured', null);
 });
 
-setInterval(configure, 1000/*ms*/ * 60/*s*/ * 60/*m*/ * 24/*h*/, err => {
+setInterval(configure, 1000/* ms */ * 60/* s */ * 60/* m */ * 24/* h */, err => {
   if (err) {
     // We do have some old configuration we can work off of and that should be fine, but do dump the error.
     console.error('configure(err): ' + err.message);
