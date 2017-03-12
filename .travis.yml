@@ -2,4 +2,11 @@ language: node_js
 node_js:
   - "6"
 env:
+  - CXX=g++-4.8
   - secure: "2onlQSSOYXEzP4/MZJbZqG2TV3iYYvXI2UxmtsnvB/nnebwVSRHSFCGOjw8qtNHn8G7SDm/tfAKUIHw7p26x6+QPsQa+GCPtZafAh+tc05miAMvXAhOFXV97gIqoRiUlyIMwxZvcJhGFFGgXT9j81KZbkqDF/WKDcyuaxv7rt68H61Fx0TNG41ypoZoxiVB2AWw6YjZ16CiRL6kvhtx/b+T5Ob3dBM5BeXp07owJbZL/bQoMpbC2mrHa3nec+4n4mDT3X62d9zwSjeiZ/B7be66Vht1H0lVLglrDutcwH8pUkxjeHowhhW6h/thBE8BUuXbiHRR7/qTMF+SqnFcZnSSvJvKud2maTOEvdVytZQTE0fMQKOirAKKosNWx6dbyx6zwxOT8TX9Yzz0i8K4rAjnbZjdvJxv7ZB7vaM52dgcG4LvgFU2yA1CmZlmRgGIRx/NIw5eq+zLp2E+J1bwVgrZe8Y1qY5cnOl4i+x6cr0bhMjnvMw+seyoG237MifewCFVxjCqGYMuBxhWVQFbXFt3xRF3m7WUIXIdep4RLhRIkHxFHvt5hkQeFszxCcWlHomEZLqsk46qkXfEsNuhJW6K8R2Hqf7J/LS9MZ9zE5n5vY13dlWFv46lYvnjfWBLsmvF5NzZ96S77meWGlcL0Sk9CRBuHV34f1VicvnlvZIs="
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
