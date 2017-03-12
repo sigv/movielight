@@ -20,7 +20,7 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "semistandard",
-    "test": "mocha --reporter list --timeout 10000",
+    "test": "mocha --reporter list --slow 1000 --timeout 10000",
     "postinstall": "bower install"
   },
   "dependencies": {
