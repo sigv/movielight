@@ -27,10 +27,10 @@ module.exports = (db, tmdb, models) => {
                 return new models.Person(person.id,
                   person.name,
                   person.known_for,
-                  person.birthday ? parseInt(person.birthday.split('-')[0], 10) : null,
-                  person.deathhday ? parseInt(person.deathhday.split('-')[0], 10) : null,
                   person.profile_path,
-                  []);
+                  null,
+                  null,
+                  null);
               });
               reply();
             })
@@ -60,32 +60,23 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           reply();
         } else {
-          tmdb.person.info({ id: id })
+          tmdb.person.info({ id: id, append_to_response: 'movie_credits' })
             .then(info => {
               data.person = new models.Person(info.id,
                 info.name,
-                info.known_for,
+                info.also_known_as,
+                info.profile_path,
                 info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
                 info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
-                info.profile_path,
-                []);
-              tmdb.person.movie_credits({ id: id })
-                .then(credits => {
-                  data.person.movies = credits.cast.map(credit => {
-                    return new models.Movie(credit.id,
-                      credit.title,
-                      credit.original_title,
-                      credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
-                      credit.poster_path,
-                      []);
-                  });
-                  reply();
-                })
-                .catch(err => {
-                  console.error(err);
-                  data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
-                  reply();
-                });
+                info.movie_credits.cast.map(credit => {
+                  return new models.Movie(credit.id,
+                    credit.title,
+                    credit.original_title,
+                    credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
+                    credit.poster_path,
+                    []);
+                }).slice(0, 10));
+              reply();
             })
             .catch(err => {
               console.error(err);

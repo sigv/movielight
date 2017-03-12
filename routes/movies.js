@@ -59,32 +59,23 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           reply();
         } else {
-          tmdb.movie.details({ movie_id: id })
+          tmdb.movie.details({ movie_id: id, append_to_response: 'credits' })
             .then(movie => {
               data.movie = new models.Movie(movie.id,
                 movie.title,
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
                 movie.poster_path,
-                []);
-              tmdb.movie.credits({ movie_id: id })
-                .then(credits => {
-                  data.movie.actors = credits.cast.map(person => {
-                    return new models.Person(person.id,
-                      person.name,
-                      [],
-                      null,
-                      null,
-                      person.profile_path,
-                      []);
-                  });
-                  reply();
-                })
-                .catch(err => {
-                  console.error(err);
-                  data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
-                  reply();
-                });
+                movie.credits.cast.map(person => {
+                  return new models.Person(person.id,
+                    person.name,
+                    [], // TODO Add the appearance in this movie.
+                    person.profile_path,
+                    null,
+                    null,
+                    null);
+                }).slice(0, 10));
+              reply();
             })
             .catch(err => {
               console.error(err);

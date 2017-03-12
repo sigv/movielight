@@ -36,19 +36,19 @@ class Movie {
 }
 
 class Person {
-  constructor (id, name, alsoKnownAs, yearBorn, yearDied, imageUrl, movies) {
+  constructor (id, name, alsoKnownAs, imageUrl, yearBorn, yearDied, movies) {
     this._id = id;
     this._name = name;
     this._alsoKnownAs = alsoKnownAs;
+    this._imageUrl = imageUrl;
     this._yearBorn = yearBorn;
     this._yearDied = yearDied;
-    this._imageUrl = imageUrl;
     this._movies = movies;
   }
 
   toJSON () {
-    let { id, name, alsoKnownAs, yearBorn, yearDied, imageUrl, movies } = this;
-    return { id, name, alsoKnownAs, yearBorn, yearDied, imageUrl, movies };
+    let { id, name, alsoKnownAs, imageUrl, yearBorn, yearDied, movies } = this;
+    return { id, name, alsoKnownAs, imageUrl, yearBorn, yearDied, movies };
   }
 
   get id () { return this._id; }
@@ -60,14 +60,14 @@ class Person {
   get alsoKnownAs () { return this._alsoKnownAs; }
   set alsoKnownAs (val) { this._alsoKnownAs = Array.isArray(val) ? val.filter(item => { return typeof item === 'string' && item.trim() !== ''; }) : []; }
 
+  get imageUrl () { return this._imageUrl; }
+  set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
+
   get yearBorn () { return this._yearBorn; }
   set yearBorn (val) { this._yearBorn = typeof val === 'number' && !isNaN(val) ? val : null; }
 
   get yearDied () { return this._yearDied; }
   set yearDied (val) { this._yearDied = typeof val === 'number' && !isNaN(val) ? val : null; }
-
-  get imageUrl () { return this._imageUrl; }
-  set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get movies () { return this._movies; }
   set movies (val) { this._movies = Array.isArray(val) ? val.filter(item => { return item instanceof Movie; }) : []; }
