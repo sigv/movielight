@@ -4,7 +4,9 @@
 let path = require('path');
 let server = require(path.join('..', 'server'));
 
-let expect = require('chai').expect;
+let chai = require('chai');
+chai.use(require('chai-string'));
+let expect = chai.expect;
 let request = require('supertest');
 
 describe('Movies', () => {
@@ -39,7 +41,7 @@ describe('Movies', () => {
           expect(movie.title).to.eq('Deadpool');
           expect(movie.originalTitle).to.eq('Deadpool');
           expect(movie.year).to.eq(2016);
-          expect(movie.posterUrl).to.be.a('string');
+          expect(movie.posterUrl).to.startWith('https://').and.to.endWith('.jpg');
         }).end(done);
     });
   });
@@ -60,7 +62,7 @@ describe('Movies', () => {
           expect(movie.title).to.eq('Deadpool');
           expect(movie.originalTitle).to.eq('Deadpool');
           expect(movie.year).to.eq(2016);
-          expect(movie.posterUrl).to.be.a('string');
+          expect(movie.posterUrl).to.startWith('https://').and.to.endWith('.jpg');
 
           expect(movie.cast).to.be.an('array').and.and.to.have.length.above(0);
           let lead = movie.cast[0];

@@ -4,7 +4,9 @@
 let path = require('path');
 let server = require(path.join('..', 'server'));
 
-let expect = require('chai').expect;
+let chai = require('chai');
+chai.use(require('chai-string'));
+let expect = chai.expect;
 let request = require('supertest');
 
 describe('People', () => {
@@ -36,7 +38,7 @@ describe('People', () => {
           expect(person).to.be.an('object');
           expect(person.id).to.eq(10859);
 
-          expect(person.imageUrl).to.be.a('string');
+          expect(person.imageUrl).to.startWith('https://').and.to.endWith('.jpg');
           expect(person.alsoKnownAs).to.be.an('array');
         }).end(done);
     });
@@ -55,7 +57,7 @@ describe('People', () => {
           let person = res.body.person;
           expect(person).to.be.an('object');
 
-          expect(person.imageUrl).to.be.a('string');
+          expect(person.imageUrl).to.startWith('https://').and.to.endWith('.jpg');
           expect(person.alsoKnownAs).to.be.an('array');
 
           expect(person.yearBorn).to.be.a('number');
