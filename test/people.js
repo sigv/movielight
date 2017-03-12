@@ -63,6 +63,13 @@ describe('People', () => {
           expect(person.yearBorn).to.be.a('number');
           expect(person.yearDied).to.eq(null); // TODO expect( .. ).to.be.a('number') ?
           expect(person.movies).to.be.an('array').and.and.to.have.length.within(1, 10);
+          let movie = person.movies[0];
+          expect(movie).to.be.an('object');
+          expect(movie.id).to.eq(293660);
+          expect(movie.title).to.eq('Deadpool');
+          expect(movie.originalTitle).to.eq('Deadpool');
+          expect(movie.year).to.eq(2016);
+          expect(movie.posterUrl).to.startWith('https://').and.to.endWith('.jpg');
         }).end(done);
     });
   });

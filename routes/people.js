@@ -54,20 +54,30 @@ module.exports = (db, tmdb, models) => {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           reply();
         } else {
-          tmdb.person.info({ id: id, append_to_response: 'movie_credits' })
+          tmdb.person.info({ id: id })
             .then(info => {
-              data.person = new models.Person(info.id,
-                info.name,
-                info.profile_path,
-                info.also_known_as,
-                info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
-                info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
-                info.movie_credits.cast.map(credit => new models.Movie(credit.id,
-                  credit.title,
-                  credit.original_title,
-                  credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
-                  credit.poster_path)).slice(0, 10));
-              reply();
+              tmdb.search.person({ query: info.name })
+                .then(search => {
+                  let result = search.results.filter(result => result.id === id)[0];
+                  let knownFor = result ? result.known_for.sort((a, b) => b.vote_count - a.vote_count).slice(0, 10) : [];
+                  data.person = new models.Person(info.id,
+                    info.name,
+                    info.profile_path,
+                    info.also_known_as,
+                    info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
+                    info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
+                    knownFor.map(result => new models.Movie(result.id,
+                      result.title,
+                      result.original_title,
+                      result.release_date ? parseInt(result.release_date.split('-')[0], 10) : null,
+                      result.poster_path)));
+                  reply();
+                })
+                .catch(err => {
+                  console.error('TMDb: ' + err.message);
+                  data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
+                  reply();
+                });
             })
             .catch(err => {
               console.error('TMDb: ' + err.message);
