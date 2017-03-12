@@ -62,7 +62,13 @@ describe('Movies', () => {
           expect(movie.year).to.eq(2016);
           expect(movie.posterUrl).to.be.a('string');
 
-          expect(movie.actors).to.be.an('array').and.and.to.have.length.above(0);
+          expect(movie.cast).to.be.an('array').and.and.to.have.length.above(0);
+          let lead = movie.cast[0];
+          expect(lead).to.be.an('object');
+          expect(lead.id).to.eq(10859);
+          expect(lead.name).to.eq('Ryan Reynolds');
+          expect(lead.imageUrl).to.be.a('string');
+          expect(lead.role).to.eq('Wade Wilson / Deadpool');
         }).end(done);
     });
   });

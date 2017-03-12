@@ -19,6 +19,7 @@ let tmdb = new (require('tmdbapi'))({ apiv3: tmdbKey.trim() });
 
 let express = require('express');
 let app = express();
+module.exports = app;
 
 app.set('case sensitive routing', true);
 app.set('env', env === 'dev' ? 'development' : 'production');
@@ -53,21 +54,37 @@ app.get('/', (req, res) => {
 });
 
 let models = require(path.join(__dirname, 'models'));
+tmdb.configuration()
+  .then(config => {
+    models.config.setUpImage(config.images.secure_base_url,
+      config.images.poster_sizes
+        .map(size => size.match(/^w([0-9]+)$/))
+        .filter(size => size)
+        .sort((a, b) => a[1] - b[1])
+        .slice(-1)[0][0],
+      config.images.profile_sizes
+        .map(size => size.match(/^w([0-9]+)$/))
+        .filter(size => size)
+        .sort((a, b) => a[1] - b[1])
+        .slice(-1)[0][0]);
 
-let movies = require(path.join(__dirname, 'routes', 'movies'))(db, tmdb, models);
-app.route('/m/search/:title')
-  .get(movies.search.get);
-app.route('/m/:id')
-  .get(movies._.get);
+    let movies = require(path.join(__dirname, 'routes', 'movies'))(db, tmdb, models);
+    app.route('/m/search/:title')
+      .get(movies.search.get);
+    app.route('/m/:id')
+      .get(movies._.get);
 
-let people = require(path.join(__dirname, 'routes', 'people'))(db, tmdb, models);
-app.route('/p/search/:name')
-  .get(people.search.get);
-app.route('/p/:id')
-  .get(people._.get);
+    let people = require(path.join(__dirname, 'routes', 'people'))(db, tmdb, models);
+    app.route('/p/search/:name')
+      .get(people.search.get);
+    app.route('/p/:id')
+      .get(people._.get);
 
-if (standalone) {
-  app.listen(app.get('port'));
-} else {
-  module.exports = app;
-}
+    if (standalone) {
+      app.listen(app.get('port'));
+    }
+    app.emit('configured', null);
+  })
+  .catch(err => {
+    throw err;
+  });

@@ -20,7 +20,7 @@
   "scripts": {
     "start": "node server.js",
     "pretest": "jshint --exclude node_modules && semistandard",
-    "test": "mocha --reporter list"
+    "test": "mocha --reporter list --timeout 10000"
   },
   "dependencies": {
     "body-parser": "^1.17.1",

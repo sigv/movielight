@@ -27,13 +27,12 @@ module.exports = (db, tmdb, models) => {
                 movie.title,
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
-                movie.poster_path,
-                []));
+                movie.poster_path));
               reply();
             })
             .catch(err => {
-              console.error(err);
-              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              console.error('TMDb: ' + err.message);
+              data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
               reply();
             });
         }
@@ -64,18 +63,15 @@ module.exports = (db, tmdb, models) => {
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
                 movie.poster_path,
-                movie.credits.cast.map(person => new models.Person(person.id,
-                  person.name,
-                  [], // TODO Add the appearance in this movie.
-                  person.profile_path,
-                  null,
-                  null,
-                  null)).slice(0, 10));
+                movie.credits.cast.sort((a, b) => a.order - b.order).slice(0, 10).map(cast => new models.Character(cast.id,
+                  cast.name,
+                  cast.profile_path,
+                  cast.character)));
               reply();
             })
             .catch(err => {
-              console.error(err);
-              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              console.error('TMDb: ' + err.message);
+              data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
               reply();
             });
         }

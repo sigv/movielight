@@ -25,16 +25,12 @@ module.exports = (db, tmdb, models) => {
             .then(person => {
               data.people = person.results.map(person => new models.Person(person.id,
                 person.name,
-                person.known_for,
-                person.profile_path,
-                null,
-                null,
-                null));
+                person.profile_path));
               reply();
             })
             .catch(err => {
-              console.error(err);
-              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              console.error('TMDb: ' + err.message);
+              data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
               reply();
             });
         }
@@ -62,21 +58,20 @@ module.exports = (db, tmdb, models) => {
             .then(info => {
               data.person = new models.Person(info.id,
                 info.name,
-                info.also_known_as,
                 info.profile_path,
+                info.also_known_as,
                 info.birthday ? parseInt(info.birthday.split('-')[0], 10) : null,
                 info.deathhday ? parseInt(info.deathhday.split('-')[0], 10) : null,
                 info.movie_credits.cast.map(credit => new models.Movie(credit.id,
                   credit.title,
                   credit.original_title,
                   credit.release_date ? parseInt(credit.release_date.split('-')[0], 10) : null,
-                  credit.poster_path,
-                  [])).slice(0, 10));
+                  credit.poster_path)).slice(0, 10));
               reply();
             })
             .catch(err => {
-              console.error(err);
-              data.error = { code: 500, message: 'The upstream API did not respond as expected.' };
+              console.error('TMDb: ' + err.message);
+              data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
               reply();
             });
         }

@@ -36,8 +36,8 @@ describe('People', () => {
           expect(person).to.be.an('object');
           expect(person.id).to.eq(10859);
 
-          expect(person.alsoKnownAs).to.be.an('array');
           expect(person.imageUrl).to.be.a('string');
+          expect(person.alsoKnownAs).to.be.an('array');
         }).end(done);
     });
   });
@@ -55,8 +55,8 @@ describe('People', () => {
           let person = res.body.person;
           expect(person).to.be.an('object');
 
-          expect(person.alsoKnownAs).to.be.an('array');
           expect(person.imageUrl).to.be.a('string');
+          expect(person.alsoKnownAs).to.be.an('array');
 
           expect(person.yearBorn).to.be.a('number');
           expect(person.yearDied).to.eq(null); // TODO expect( .. ).to.be.a('number') ?
