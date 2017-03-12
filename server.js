@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'bower_components')));
 
 app.get('/', (req, res) => {
   let data = { error: null };

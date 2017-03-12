@@ -22,5 +22,6 @@ Thumbs.db
 *.seed
 .eslintcache
 .npm
+bower_components
 node_modules
 npm-debug.log*
