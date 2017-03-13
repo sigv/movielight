@@ -1,6 +1,6 @@
 {
   "name": "movielight",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "dependencies": {
     "accepts": {
       "version": "1.3.3",
