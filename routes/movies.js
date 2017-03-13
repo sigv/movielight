@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env es6, node */
 'use strict';
 
 module.exports = (db, tmdb, models) => {

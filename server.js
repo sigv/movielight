@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env es6, node */
 'use strict';
 
 let path = require('path');
@@ -108,5 +109,5 @@ setInterval(configure, 1000/* ms */ * 60/* s */ * 60/* m */ * 24/* h */, err => 
 });
 
 if (typeof before === 'function') {
-  before(done => app.on('configured', done));
+  before(done => app.on('configured', done)); // eslint-disable-line no-undef
 }

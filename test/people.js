@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env es6, node, mocha */
 'use strict';
 
 let path = require('path');

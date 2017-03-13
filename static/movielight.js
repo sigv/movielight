@@ -1,4 +1,8 @@
+/* eslint-env browser, jquery */
+
 $(function () {
+  'use strict';
+
   var movieId = null;
 
   $.fn.api.settings.api = {
@@ -38,15 +42,18 @@ $(function () {
       $('.title').text(originalTitle + (year ? ' (' + year + ')' : ''));
       $('.subtitle').text(title !== originalTitle ? title : '');
 
-      $.ajax('/m/' + result.id, { dataType: 'json', success: function (answer) {
-        if (!answer || !answer.movie || answer.movie.id !== movieId) { return; }
-        console.log(answer.movie);
-        $('.actors').empty();
-        for (var actor = 0; actor < answer.movie.cast.length; actor++) {
-          var person = answer.movie.cast[actor];
-          $('.actors').append('<div class="two wide column"><img class="ui fluid circular image" src="' + person.imageUrl + '"><br><p><b>' + person.name + '</b><br><i>' + person.role + '</i></p></div>');
+      $.ajax('/m/' + result.id, {
+        dataType: 'json',
+        success: function (answer) {
+          if (!answer || !answer.movie || answer.movie.id !== movieId) { return; }
+          console.log(answer.movie);
+          $('.actors').empty();
+          for (var actor = 0; actor < answer.movie.cast.length; actor++) {
+            var person = answer.movie.cast[actor];
+            $('.actors').append('<div class="two wide column"><img class="ui fluid circular image" src="' + person.imageUrl + '"><br><p><b>' + person.name + '</b><br><i>' + person.role + '</i></p></div>');
+          }
         }
-      } });
+      });
 
       return true;
     },

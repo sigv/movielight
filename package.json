@@ -4,7 +4,6 @@
   "description": "Spotlight search service for movies",
   "keywords": [
     "themoviedb",
-    "search",
     "movies",
     "actors"
   ],
@@ -44,12 +43,5 @@
   },
   "engines": {
     "node": "^6.10.0"
-  },
-  "semistandard": {
-    "env": {
-      "es6": true,
-      "mocha": true,
-      "node": true
-    }
   }
 }
