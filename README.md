@@ -7,11 +7,10 @@ Spotlight search service for movies.
 
 ## Setting up
 
-The set-up is plain and simple.
+The set-up is as simple as 1-2-3.
 
-1. Grab a copy of this repository.
-2. _npm install_
-3. Set the `MOVIE_DB_KEY` environment variable to your [TMDb](https://www.themoviedb.org/) API key.
-4. _npm start_
+1. _npm install_
+2. Set the `MOVIE_DB_KEY` environment variable to your [TMDb](https://www.themoviedb.org/) API key.
+3. _npm start_
 
 That's it! The server's running.
