@@ -57,6 +57,7 @@ module.exports = (db, tmdb, models) => {
                       result.title,
                       result.original_title,
                       result.release_date ? parseInt(result.release_date.split('-')[0], 10) : null,
+                      result.overview,
                       result.poster_path)));
                   reply();
                 })

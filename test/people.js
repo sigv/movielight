@@ -69,6 +69,7 @@ describe('People', () => {
           expect(movie.title).to.eq('Deadpool');
           expect(movie.originalTitle).to.eq('Deadpool');
           expect(movie.year).to.eq(2016);
+          expect(movie.description).to.be.a('string').and.and.to.have.length.above(0);
           expect(movie.posterUrl).to.startWith('https://').and.to.endWith('.jpg');
         }).end(done);
     });

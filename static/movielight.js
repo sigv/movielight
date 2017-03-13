@@ -95,6 +95,7 @@ $(function () {
       $('.poster').attr('src', result.posterUrl || '');
       $('.title').text(result.originalTitle + (result.year ? ' (' + result.year + ')' : ''));
       $('.subtitle').text(result.title !== result.originalTitle ? result.title : '');
+      $('.synopsis').text(result.description || '');
       showMovie(result.id);
       return true;
     },

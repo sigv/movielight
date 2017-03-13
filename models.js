@@ -29,18 +29,19 @@ class Configuration {
 let config = new Configuration();
 
 class Movie {
-  constructor (id, title, originalTitle, year, posterUrl, cast) {
+  constructor (id, title, originalTitle, year, description, posterUrl, cast) {
     this.id = id;
     this.title = title;
     this.originalTitle = originalTitle;
     this.year = year;
+    this.description = description;
     this.posterUrl = posterUrl;
     this.cast = cast;
   }
 
   toJSON () {
-    let { id, title, originalTitle, year, posterUrl, cast } = this;
-    return { id, title, originalTitle, year, posterUrl, cast };
+    let { id, title, originalTitle, year, description, posterUrl, cast } = this;
+    return { id, title, originalTitle, year, description, posterUrl, cast };
   }
 
   get id () { return this._id; }
@@ -54,6 +55,9 @@ class Movie {
 
   get year () { return this._year; }
   set year (val) { this._year = typeof val === 'number' && !isNaN(val) ? val : null; }
+
+  get description () { return this._description; }
+  set description (val) { this._description = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get posterUrl () { return this._posterUrl ? config.imageBase + config.imagePosterSize + this._posterUrl : null; }
   set posterUrl (val) { this._posterUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }

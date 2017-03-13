@@ -21,6 +21,7 @@ module.exports = (db, tmdb, models) => {
                 movie.title,
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
+                movie.overview,
                 movie.poster_path));
               reply();
             })
@@ -49,6 +50,7 @@ module.exports = (db, tmdb, models) => {
                 movie.title,
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
+                movie.overview,
                 movie.poster_path,
                 movie.credits.cast.sort((a, b) => a.order - b.order).slice(0, 8).map(cast => new models.Character(cast.id,
                   cast.name,
