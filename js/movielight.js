@@ -14,7 +14,7 @@ $(function () {
     blurring: true,
     onHide: function ($element) {
       openPerson = {};
-      history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+      history.pushState({}, '', '/#/m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
       document.title = (openMovie.title ? openMovie.title + ' • ' : '') + 'Movie Light';
     }
   });
@@ -27,9 +27,15 @@ $(function () {
       dataType: 'json',
       success: function (answer) {
         if (!answer || !answer.movie || answer.movie.id !== openMovie.id) { return; }
-        history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+        history.pushState({}, '', '/#/m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
         openMovie = answer.movie;
         document.title = (openPerson.name ? openPerson.name : answer.movie.title) + ' • Movie Light';
+
+        $('.poster').attr('src', answer.movie.posterUrl || '');
+        $('.title').text(answer.movie.originalTitle + (answer.movie.year ? ' (' + answer.movie.year + ')' : ''));
+        $('.subtitle').text(answer.movie.title !== answer.movie.originalTitle ? answer.movie.title : '');
+        $('.synopsis').text(answer.movie.description || '');
+
         $('.actors').empty();
         var clickListener = function (e) {
           showPerson($(e.currentTarget).data('id'));
@@ -56,9 +62,10 @@ $(function () {
       dataType: 'json',
       success: function (answer) {
         if (!answer || !answer.person || answer.person.id !== openPerson.id) { return; }
-        history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+        history.pushState({}, '', '/#/m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
         openPerson = answer.person;
         document.title = answer.person.name + ' • Movie Light';
+
         var modal = $('.ui.modal');
         modal.find('.header .name').text(answer.person.name);
         modal.find('.header .subname').text([
@@ -82,6 +89,12 @@ $(function () {
       }
     });
   };
+
+  var hashMatch = location.hash.match(/^#\/m([0-9]*)\/p([0-9]*)$/);
+  if (hashMatch) {
+    showMovie(parseInt(hashMatch[1], 10));
+    showPerson(parseInt(hashMatch[2], 10));
+  }
 
   $('.ui.search').search({
     apiSettings: {
