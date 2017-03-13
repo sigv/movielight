@@ -75,12 +75,21 @@ $(function () {
         modal.find('.profile').attr('src', answer.person.imageUrl);
         modal.find('.bio').text(answer.person.bio || '');
         modal.find('.movies').empty();
+        var clickListener = function (e) {
+          openPerson = {};
+          showMovie($(e.currentTarget).data('id'));
+          setTimeout(function () {
+            modal.modal('hide');
+          }, 1);
+        };
         for (var cast = 0; cast < answer.person.movies.length; cast++) {
           var movie = answer.person.movies[cast];
-          var column = $('<div class="four wide movie column"><img class="ui fluid rounded image"><br><p><b class="title"></b><br><em class="year"></em></p></div>');
+          var column = $('<div class="clickable four wide movie column"><img class="ui fluid rounded image"><br><p><b class="title"></b><br><em class="year"></em></p></div>');
+          column.data('id', movie.id);
           column.find('.image').attr('src', movie.posterUrl);
           column.find('.title').text(movie.title);
           column.find('.year').text(movie.year);
+          column.click(clickListener);
           modal.find('.movies').prepend(column);
         }
         setTimeout(function () {
