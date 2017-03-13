@@ -99,11 +99,20 @@ $(function () {
     });
   };
 
-  var hashMatch = location.hash.match(/^#\/m([0-9]*)\/p([0-9]*)$/);
-  if (hashMatch) {
-    showMovie(parseInt(hashMatch[1], 10));
-    showPerson(parseInt(hashMatch[2], 10));
-  }
+  window.onhashchange = function () {
+    var hashMatch = location.hash.match(/^#\/m([0-9]*)\/p([0-9]*)$/);
+
+    var movieId = hashMatch ? parseInt(hashMatch[1], 10) || null : null;
+    if (movieId !== null ? movieId !== openMovie.id : (typeof openMovie.id !== 'undefined' && openMovie.id !== null)) {
+      showMovie(movieId);
+    }
+
+    var personId = hashMatch ? parseInt(hashMatch[2], 10) || null : null;
+    if (personId !== null ? personId !== openPerson.id : (typeof openPerson.id !== 'undefined' && openPerson.id !== null)) {
+      showPerson(personId);
+    }
+  };
+  window.onhashchange();
 
   $('.ui.search').search({
     apiSettings: {
