@@ -31,4 +31,11 @@ gulp.task('img', () => gulp
   .pipe(imagemin())
   .pipe(gulp.dest('build')));
 
-gulp.task('default', [ 'views', 'less', 'js', 'img' ]);
+gulp.task('build', [ 'views', 'less', 'js', 'img' ]);
+
+gulp.task('default', [ 'build' ], () => {
+  gulp.watch('views/*.pug', [ 'views' ]);
+  gulp.watch('less/*.less', [ 'less' ]);
+  gulp.watch('js/*.js', [ 'js' ]);
+  gulp.watch('img/*', [ 'img' ]);
+});
