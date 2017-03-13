@@ -51,7 +51,10 @@ $(function () {
         console.log(answer.person);
         var modal = $('.ui.modal');
         modal.find('.header .name').text(answer.person.name);
-        modal.find('.header .aka').text(answer.person.alsoKnownAs && answer.person.alsoKnownAs.length > 0 ? 'also known as ' + answer.person.alsoKnownAs.join(', ') : '');
+        modal.find('.header .subname').text([
+          answer.person.age ? answer.person.age === '1' ? '1 year old' : answer.person.age + ' years old' : '',
+          answer.person.alsoKnownAs && answer.person.alsoKnownAs.length > 0 ? 'also known as ' + answer.person.alsoKnownAs.join(', ') : ''
+        ].filter(function (item) { return typeof item === 'string' && item !== ''; }).join(' • '));
         modal.find('.profile').attr('src', answer.person.imageUrl);
         modal.find('.movies').empty();
         for (var cast = 0; cast < answer.person.movies.length; cast++) {
