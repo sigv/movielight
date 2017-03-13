@@ -3,25 +3,33 @@
 $(function () {
   'use strict';
 
-  var movieId = null;
-  var personId = null;
+  var openMovie = {};
+  var openPerson = {};
 
   $.fn.api.settings.api = {
     'search': '/m/search/{query}'
   };
 
-  $('.ui.nag').nag('show');
-  $('.ui.modal').modal({ blurring: true });
+  $('.ui.modal').modal({
+    blurring: true,
+    onHide: function ($element) {
+      openPerson = {};
+      history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+      document.title = (openMovie.title ? openMovie.title + ' • ' : '') + 'Movie Light';
+    }
+  });
 
   var showMovie = function (id) {
-    movieId = id;
+    openMovie = { id: id };
     if (!id) { return; }
 
     $.ajax('/m/' + id, {
       dataType: 'json',
       success: function (answer) {
-        if (!answer || !answer.movie || answer.movie.id !== movieId) { return; }
-        console.log(answer.movie);
+        if (!answer || !answer.movie || answer.movie.id !== openMovie.id) { return; }
+        history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+        openMovie = answer.movie;
+        document.title = (openPerson.name ? openPerson.name : answer.movie.title) + ' • Movie Light';
         $('.actors').empty();
         var clickListener = function (e) {
           showPerson($(e.currentTarget).data('id'));
@@ -41,14 +49,16 @@ $(function () {
   };
 
   var showPerson = function (id) {
-    personId = id;
+    openPerson = { id: id };
     if (!id) { return; }
 
     $.ajax('/p/' + id, {
       dataType: 'json',
       success: function (answer) {
-        if (!answer || !answer.person || answer.person.id !== personId) { return; }
-        console.log(answer.person);
+        if (!answer || !answer.person || answer.person.id !== openPerson.id) { return; }
+        history.pushState({}, '', '/#m' + (openMovie.id || '') + '/p' + (openPerson.id || ''));
+        openPerson = answer.person;
+        document.title = answer.person.name + ' • Movie Light';
         var modal = $('.ui.modal');
         modal.find('.header .name').text(answer.person.name);
         modal.find('.header .subname').text([
@@ -66,7 +76,9 @@ $(function () {
           column.find('.year').text(movie.year);
           modal.find('.movies').prepend(column);
         }
-        modal.modal('show');
+        setTimeout(function () {
+          modal.modal('show');
+        }, 1);
       }
     });
   };
