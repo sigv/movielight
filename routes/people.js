@@ -27,7 +27,6 @@ module.exports = (db, tmdb, models) => {
             } else if (person) {
               try {
                 setPerson(JSON.parse(person));
-                console.log('Cache hit!');
                 return;
               } catch (err) {
                 console.error('Cache: ' + err.message);
@@ -75,29 +74,72 @@ module.exports = (db, tmdb, models) => {
               result.poster_path)));
           res.status(data.error ? data.error.code || 500 : 200).json(data);
         };
+        let setInfo = info => {
+          let cacheKey = '/search/person?' + info.name;
+          db.get(cacheKey, (err, search) => {
+            if (err) {
+              console.error('Cache: ' + err.message);
+            } else if (search) {
+              try {
+                setInfoSearch(info, JSON.parse(search));
+                return;
+              } catch (err) {
+                console.error('Cache: ' + err.message);
+              }
+            }
+
+            tmdb.search.person({ query: info.name })
+              .then(search => {
+                db.setex(cacheKey, 60/* s */ * 30/* min */, JSON.stringify(search), err => {
+                  if (err) {
+                    console.error('Cache: ' + err.message);
+                  }
+
+                  setInfoSearch(info, search);
+                });
+              })
+              .catch(err => {
+                console.error('TMDb: ' + err.message);
+                data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
+                res.status(data.error.code).json(data);
+              });
+          });
+        };
 
         let id = typeof req.params.id === 'string' ? parseInt(req.params.id, 10) : NaN;
         if (isNaN(id)) {
           data.error = { code: 400, message: 'A gettable integer ID must be provided.' };
           res.status(data.error.code).json(data);
         } else {
-          tmdb.person.info({ id: id })
-            .then(info => {
-              tmdb.search.person({ query: info.name })
-                .then(search => {
-                  setInfoSearch(info, search);
-                })
-                .catch(err => {
-                  console.error('TMDb: ' + err.message);
-                  data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
-                  res.status(data.error.code).json(data);
+          let cacheKey = '/person/' + id;
+          db.get(cacheKey, (err, info) => {
+            if (err) {
+              console.error('Cache: ' + err.message);
+            } else if (info) {
+              try {
+                setInfo(JSON.parse(info));
+                return;
+              } catch (err) {
+                console.error('Cache: ' + err.message);
+              }
+            }
+
+            tmdb.person.info({ id: id })
+              .then(info => {
+                db.setex(cacheKey, 60/* s */ * 30/* min */, JSON.stringify(info), err => {
+                  if (err) {
+                    console.error('Cache: ' + err.message);
+                  }
+
+                  setInfo(info);
                 });
-            })
-            .catch(err => {
-              console.error('TMDb: ' + err.message);
-              data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
-              res.status(data.error.code).json(data);
-            });
+              })
+              .catch(err => {
+                console.error('TMDb: ' + err.message);
+                data.error = { code: 503, message: 'The upstream API did not respond as expected.' };
+                res.status(data.error.code).json(data);
+              });
+          });
         }
       }
     }

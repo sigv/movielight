@@ -30,7 +30,6 @@ module.exports = (db, tmdb, models) => {
             } else if (movie) {
               try {
                 setMovie(JSON.parse(movie));
-                console.log('Cache hit!');
                 return;
               } catch (err) {
                 console.error('Cache: ' + err.message);
@@ -86,7 +85,6 @@ module.exports = (db, tmdb, models) => {
             } else if (movie) {
               try {
                 setMovie(JSON.parse(movie));
-                console.log('Cache hit!');
                 return;
               } catch (err) {
                 console.error('Cache: ' + err.message);
