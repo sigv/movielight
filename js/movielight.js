@@ -56,7 +56,7 @@ $(function () {
 
   var showPerson = function (id) {
     openPerson = { id: id };
-    if (!id) { return; }
+    if (!id) { $('.ui.modal').modal('hide'); return; }
 
     $.ajax('/p/' + id, {
       dataType: 'json',
