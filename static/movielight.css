@@ -2,3 +2,4 @@
 .bodycontainer { min-width: 100%; min-height: 100%; padding-top: 6em; }
 .ui.grid+.grid { margin-top: 3em; }
 .ui.grid+.grid.attribution { margin-top: 12em; }
+.clickable { cursor: pointer; }
