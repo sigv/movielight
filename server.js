@@ -28,8 +28,6 @@ app.set('etag', 'strong');
 app.set('port', process.env.PORT || 8080);
 app.set('strict routing', true);
 app.set('trust proxy', true);
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
 app.set('x-powered-by', false);
 
 if (standalone) { app.use(require('morgan')(env === 'dev' ? 'dev' : 'combined')); }
@@ -41,19 +39,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
-
-app.get('/', (req, res) => {
-  let data = { error: null };
-
-  res.status(data.error ? data.error.code || 500 : 200);
-  if (req.accepts('html') || !req.accepts('json')) {
-    res.render('index', { data });
-  } else {
-    res.json(data);
-  }
-});
 
 let models = require(path.join(__dirname, 'models'));
 
