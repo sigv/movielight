@@ -8,7 +8,7 @@ module.exports = (db, tmdb, models) => {
     search: {
       get: (req, res) => {
         let data = { error: null, movies: [] };
-        let setMovie = (movie) => {
+        let setMovie = movie => {
           data.movies = movie.results.map(movie => new models.Movie(movie.id,
             movie.title,
             movie.original_title,
@@ -60,7 +60,7 @@ module.exports = (db, tmdb, models) => {
     _: {
       get: (req, res) => {
         let data = { error: null, movie: {} };
-        let setMovie = (movie) => {
+        let setMovie = movie => {
           data.movie = new models.Movie(movie.id,
             movie.title,
             movie.original_title,
