@@ -9,6 +9,31 @@ html(lang='en')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     <!--[if IE]><script src='/html5shiv/dist/html5shiv.min.js'></script><![endif]-->
     link(rel='stylesheet' href='/reset-css/reset.css')
+    link(rel='stylesheet' href='/semantic/dist/semantic.min.css')
+    link(rel='stylesheet' href='/movielight.css')
   body
+    div.ui.fluid.search
+      div.ui.huge.fluid.left.icon.input
+        input.prompt(type='text' placeholder='Your Favorite Movie')
+        i.search.icon
+      div.results
+    div.blurring.bodycontainer
+      div.ui.container
+        div.ui.equal.width.grid.stackable
+          div.column
+            img.ui.fluid.rounded.poster.image
+          div.column
+            h1.ui.header.title
+            h3.ui.header.subtitle
+        div.ui.grid
+          div.doubling.eight.column.row.actors
+        div.ui.grid.attribution
+          div.doubling.eight.column.row
+            div.two.wide.column
+              img.ui.image.fluid(src='/tmdb-stacked.png' width='208' height='226')
+            div.twelve.wide.column
+              p This product uses the TMDb API but is not endorsed or certified by TMDb.
     script(src='/jquery/dist/jquery.min.js')
+    script(src='/semantic/dist/semantic.min.js')
+    script(src='/movielight.js')
 = '\n'

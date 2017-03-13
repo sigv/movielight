@@ -7,14 +7,7 @@ module.exports = (db, tmdb, models) => {
     search: {
       get: (req, res) => {
         let data = { error: null, people: [] };
-        let reply = () => {
-          res.status(data.error ? data.error.code || 500 : 200);
-          if (req.accepts('html') || !req.accepts('json')) {
-            res.render('people-search', { data });
-          } else {
-            res.json(data);
-          }
-        };
+        let reply = () => res.status(data.error ? data.error.code || 500 : 200).json(data);
 
         let name = typeof req.params.name === 'string' ? req.params.name.trim().split('-').join(' ') : '';
         if (name === '') {
@@ -40,14 +33,7 @@ module.exports = (db, tmdb, models) => {
     _: {
       get: (req, res) => {
         let data = { error: null, person: {} };
-        let reply = () => {
-          res.status(data.error ? data.error.code || 500 : 200);
-          if (req.accepts('html') || !req.accepts('json')) {
-            res.render('people', { data });
-          } else {
-            res.json(data);
-          }
-        };
+        let reply = () => res.status(data.error ? data.error.code || 500 : 200).json(data);
 
         let id = typeof req.params.id === 'string' ? parseInt(req.params.id, 10) : NaN;
         if (isNaN(id)) {

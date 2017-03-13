@@ -7,14 +7,7 @@ module.exports = (db, tmdb, models) => {
     search: {
       get: (req, res) => {
         let data = { error: null, movies: [] };
-        let reply = () => {
-          res.status(data.error ? data.error.code || 500 : 200);
-          if (req.accepts('html') || !req.accepts('json')) {
-            res.render('movies-search', { data });
-          } else {
-            res.json(data);
-          }
-        };
+        let reply = () => res.status(data.error ? data.error.code || 500 : 200).json(data);
 
         let title = typeof req.params.title === 'string' ? req.params.title.trim() : '';
         if (title === '') {
@@ -42,14 +35,7 @@ module.exports = (db, tmdb, models) => {
     _: {
       get: (req, res) => {
         let data = { error: null, movie: {} };
-        let reply = () => {
-          res.status(data.error ? data.error.code || 500 : 200);
-          if (req.accepts('html') || !req.accepts('json')) {
-            res.render('movies', { data });
-          } else {
-            res.json(data);
-          }
-        };
+        let reply = () => res.status(data.error ? data.error.code || 500 : 200).json(data);
 
         let id = typeof req.params.id === 'string' ? parseInt(req.params.id, 10) : NaN;
         if (isNaN(id)) {
@@ -63,7 +49,7 @@ module.exports = (db, tmdb, models) => {
                 movie.original_title,
                 movie.release_date ? parseInt(movie.release_date.split('-')[0], 10) : null,
                 movie.poster_path,
-                movie.credits.cast.sort((a, b) => a.order - b.order).slice(0, 10).map(cast => new models.Character(cast.id,
+                movie.credits.cast.sort((a, b) => a.order - b.order).slice(0, 8).map(cast => new models.Character(cast.id,
                   cast.name,
                   cast.profile_path,
                   cast.character)));

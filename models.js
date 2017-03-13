@@ -55,7 +55,7 @@ class Movie {
   get year () { return this._year; }
   set year (val) { this._year = typeof val === 'number' && !isNaN(val) ? val : null; }
 
-  get posterUrl () { return config.imageBase + config.imagePosterSize + this._posterUrl; }
+  get posterUrl () { return this._posterUrl ? config.imageBase + config.imagePosterSize + this._posterUrl : null; }
   set posterUrl (val) { this._posterUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get cast () { return this._cast; }
@@ -87,7 +87,7 @@ class Person {
   get alsoKnownAs () { return this._alsoKnownAs; }
   set alsoKnownAs (val) { this._alsoKnownAs = Array.isArray(val) ? val.filter(item => typeof item === 'string' && item.trim() !== '') : []; }
 
-  get imageUrl () { return config.imageBase + config.imageProfileSize + this._imageUrl; }
+  get imageUrl () { return this._imageUrl ? config.imageBase + config.imageProfileSize + this._imageUrl : null; }
   set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get yearBorn () { return this._yearBorn; }
@@ -119,7 +119,7 @@ class Character {
   get name () { return this._name; }
   set name (val) { this._name = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
-  get imageUrl () { return config.imageBase + config.imageProfileSize + this._imageUrl; }
+  get imageUrl () { return this._imageUrl ? config.imageBase + config.imageProfileSize + this._imageUrl : null; }
   set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get role () { return this._role; }
