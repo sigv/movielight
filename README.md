@@ -7,10 +7,20 @@ Spotlight search service for movies.
 
 ## Setting up
 
-The set-up is as simple as 1-2-3.
+You will need your own API key for [TMDb](https://www.themoviedb.org/) to work with this application. Don't worry, applying for one is free.
 
-1. _npm install_
-2. Set the `MOVIE_DB_KEY` environment variable to your [TMDb](https://www.themoviedb.org/) API key.
-3. _npm start_
+```sh
+$ git clone https://github.com/sigv/movielight.git && \
+  cd movielight && \
+  npm install && \
+  MOVIE_DB_KEY='Your API Key for TMDb' npm start
+```
 
-That's it! The server's running.
+## Developing
+
+Some build automation is taken care of by [gulp](http://gulpjs.com/). When working on any change, just run `gulp` and everything will be taken care of as long as you keep in mind that the tests will require the `MOVIE_DB_KEY` environment variable to be set. The test cases are written in the [Mocha](https://mochajs.org/) framework and can be easily triggered by themselves by running `npm test`.
+
+---
+
+[![Certified By Cousin Terio](https://forthebadge.com/images/badges/certified-cousin-terio.svg)](http://forthebadge.com)
+[![Powered By Electricity](http://forthebadge.com/images/badges/powered-by-electricity.svg)](http://forthebadge.com)
