@@ -7,6 +7,7 @@ let gulp = require('gulp');
 let csso = require('gulp-csso');
 let imagemin = require('gulp-imagemin');
 let less = require('gulp-less');
+let mocha = require('gulp-mocha');
 let pug = require('gulp-pug');
 let uglify = require('gulp-uglify');
 
@@ -32,10 +33,18 @@ gulp.task('img', () => gulp
   .pipe(gulp.dest('build')));
 
 gulp.task('build', [ 'views', 'less', 'js', 'img' ]);
-
-gulp.task('default', [ 'build' ], () => {
+gulp.task('watch-build', [ 'build' ], () => {
   gulp.watch('views/*.pug', [ 'views' ]);
   gulp.watch('less/*.less', [ 'less' ]);
   gulp.watch('js/*.js', [ 'js' ]);
   gulp.watch('img/*', [ 'img' ]);
 });
+
+gulp.task('mocha', () => gulp
+  .src('test/*.js', { read: false })
+  .pipe(mocha({ reporter: 'list', slow: 1000, timeout: 10000 })));
+gulp.task('watch-mocha', [ 'mocha' ], () => {
+  gulp.watch([ 'routes/*.js', 'test/*.js', 'models.js', 'server.js' ], [ 'mocha' ]);
+});
+
+gulp.task('default', [ 'watch-build', 'watch-mocha' ]);
