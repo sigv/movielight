@@ -61,6 +61,7 @@ describe('People', () => {
           expect(person.imageUrl).to.startWith('https://').and.to.endWith('.jpg');
           expect(person.alsoKnownAs).to.be.an('array');
 
+          expect(person.bio).to.be.a('string').and.and.to.have.length.above(0);
           expect(person.age).to.be.a('number').within(1, 120);
           expect(person.movies).to.be.an('array').and.and.to.have.length.within(1, 10);
           let movie = person.movies[0];

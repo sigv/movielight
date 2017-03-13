@@ -56,6 +56,7 @@ $(function () {
           answer.person.alsoKnownAs && answer.person.alsoKnownAs.length > 0 ? 'also known as ' + answer.person.alsoKnownAs.join(', ') : ''
         ].filter(function (item) { return typeof item === 'string' && item !== ''; }).join(' • '));
         modal.find('.profile').attr('src', answer.person.imageUrl);
+        modal.find('.bio').text(answer.person.bio || '');
         modal.find('.movies').empty();
         for (var cast = 0; cast < answer.person.movies.length; cast++) {
           var movie = answer.person.movies[cast];

@@ -67,19 +67,20 @@ class Movie {
 }
 
 class Person {
-  constructor (id, name, imageUrl, alsoKnownAs, dateBorn, dateDied, movies) {
+  constructor (id, name, imageUrl, alsoKnownAs, bio, dateBorn, dateDied, movies) {
     this.id = id;
     this.name = name;
-    this.alsoKnownAs = alsoKnownAs;
     this.imageUrl = imageUrl;
+    this.alsoKnownAs = alsoKnownAs;
+    this.bio = bio;
     this.dateBorn = dateBorn;
     this.dateDied = dateDied;
     this.movies = movies;
   }
 
   toJSON () {
-    let { id, name, alsoKnownAs, imageUrl, age, movies } = this;
-    return { id, name, alsoKnownAs, imageUrl, age, movies };
+    let { id, name, imageUrl, alsoKnownAs, bio, age, movies } = this;
+    return { id, name, imageUrl, alsoKnownAs, bio, age, movies };
   }
 
   get id () { return this._id; }
@@ -88,11 +89,14 @@ class Person {
   get name () { return this._name; }
   set name (val) { this._name = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
+  get imageUrl () { return this._imageUrl ? config.imageBase + config.imageProfileSize + this._imageUrl : null; }
+  set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
+
   get alsoKnownAs () { return this._alsoKnownAs; }
   set alsoKnownAs (val) { this._alsoKnownAs = Array.isArray(val) ? val.filter(item => typeof item === 'string' && item.trim() !== '') : []; }
 
-  get imageUrl () { return this._imageUrl ? config.imageBase + config.imageProfileSize + this._imageUrl : null; }
-  set imageUrl (val) { this._imageUrl = typeof val === 'string' && val.trim() !== '' ? val : null; }
+  get bio () { return this._bio; }
+  set bio (val) { this._bio = typeof val === 'string' && val.trim() !== '' ? val : null; }
 
   get age () { return this.dateBorn ? Math.floor(((this.dateDied ? this.dateDied : Date.now()) - this.dateBorn) / 1000/* ms */ / 60/* s */ / 60/* min */ / 24/* h */ / 365.25/* d */) : null; }
 

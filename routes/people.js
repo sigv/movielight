@@ -51,6 +51,7 @@ module.exports = (db, tmdb, models) => {
                     info.name,
                     info.profile_path,
                     info.also_known_as,
+                    info.biography,
                     info.birthday ? +(new Date(info.birthday)) : null,
                     info.deathhday ? +(new Date(info.deathhday)) : null,
                     knownFor.map(result => new models.Movie(result.id,
